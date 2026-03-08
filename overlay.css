@@ -1,0 +1,332 @@
+:root {
+  --greenscreen: #00ff00;
+  --ink: #1a2233;
+  --paper: #fffdf5;
+  --warm-gold: #ffe8a8;
+  --accent-red: #ff4d4d;
+  --accent-cyan: #71e7ff;
+  --accent-blue: #5b8cff;
+  --shadow-soft: rgba(26, 34, 51, 0.18);
+  --shadow-heavy: rgba(26, 34, 51, 0.28);
+  --radius-card: 26px;
+  --radius-badge: 22px;
+  --display-time: 5s;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--greenscreen);
+  font-family: "Poppins", "Segoe UI", system-ui, sans-serif;
+  color: var(--ink);
+}
+
+/* ── Layout ── */
+
+.scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: end center;
+  padding: 0 28px 5vh;
+}
+
+.cta-wrap {
+  position: relative;
+  width: min(860px, 100%);
+  min-height: 210px;
+}
+
+.cta-stage {
+  position: relative;
+  min-height: 210px;
+}
+
+/* ── Glow blobs ── */
+
+.glow {
+  position: absolute;
+  inset: auto;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  filter: blur(28px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  animation: drift 7s ease-in-out infinite alternate;
+}
+
+.glow-left {
+  left: 2%;
+  bottom: 36px;
+  background: radial-gradient(circle, rgba(255, 220, 100, 0.7), rgba(255, 100, 70, 0));
+}
+
+.glow-right {
+  right: 6%;
+  bottom: 16px;
+  background: radial-gradient(circle, rgba(113, 231, 255, 0.6), rgba(91, 140, 255, 0));
+  animation-delay: 0.8s;
+}
+
+/* ── Cards ── */
+
+.cta-card {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  gap: 20px 22px;
+  padding: 28px 30px 18px;
+  border: 3px solid var(--ink);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0) 50%),
+    linear-gradient(160deg, var(--paper), var(--warm-gold) 60%, #ffc966 100%);
+  box-shadow:
+    0 10px 0 var(--ink),
+    0 22px 36px var(--shadow-soft);
+  transform-origin: center bottom;
+  opacity: 0;
+  transform: translateY(20px) scale(0.97);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.cta-card.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.like-card {
+  z-index: 2;
+}
+
+.subscribe-card {
+  z-index: 3;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 50%),
+    linear-gradient(155deg, #162740, #1e3a54 50%, #24506c 100%);
+  color: #f0f4f8;
+  box-shadow:
+    0 10px 0 #0b1520,
+    0 22px 36px rgba(11, 21, 32, 0.32);
+}
+
+/* ── Icon badge ── */
+
+.icon-badge {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-badge);
+  border: 3px solid var(--ink);
+  background: linear-gradient(180deg, #fff, #ffe6a0);
+  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.06);
+}
+
+.subscribe-card .icon-badge {
+  border-color: rgba(215, 244, 255, 0.6);
+  background: linear-gradient(180deg, #ff7a6a, #e02d3c);
+}
+
+.icon-badge::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 28px;
+  border: 2.5px dashed rgba(255, 212, 77, 0.65);
+  animation: spin 14s linear infinite;
+}
+
+.subscribe-card .icon-badge::after {
+  border-color: rgba(113, 231, 255, 0.55);
+}
+
+.icon-badge svg {
+  width: 42px;
+  height: 42px;
+  fill: var(--ink);
+}
+
+.subscribe-card .icon-badge svg {
+  fill: white;
+}
+
+/* ── Copy ── */
+
+.cta-copy {
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  font-size: clamp(0.78rem, 0.95vw, 0.92rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.cta-copy h1,
+.cta-copy h2 {
+  margin: 0;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.8rem, 3.8vw, 3rem);
+}
+
+.supporting-text {
+  margin: 8px 0 0;
+  max-width: 38ch;
+  font-size: clamp(0.88rem, 1.1vw, 1.05rem);
+  line-height: 1.4;
+  opacity: 0.78;
+}
+
+.subscribe-card .supporting-text {
+  opacity: 0.72;
+}
+
+/* ── Pills & buttons ── */
+
+.status-pill,
+.subscribe-button {
+  align-self: center;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  border-radius: 999px;
+  font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+  letter-spacing: 0.04em;
+}
+
+.pill-emoji {
+  font-size: 1.15em;
+}
+
+.status-pill {
+  padding: 10px 18px;
+  border: 2.5px solid var(--ink);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ink);
+}
+
+.subscribe-button {
+  border: 0;
+  padding: 12px 20px;
+  color: white;
+  background: linear-gradient(180deg, #ff6a5a, #e82838);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+  cursor: default;
+}
+
+/* ── Progress bar ── */
+
+.progress-bar {
+  grid-column: 1 / -1;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.subscribe-card .progress-bar {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--ink);
+  transition: none;
+}
+
+.subscribe-card .progress-fill {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.cta-card.active .progress-fill {
+  width: 100%;
+  transition: width var(--display-time) linear;
+}
+
+/* ── Keyframes ── */
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes drift {
+  from { transform: translate3d(-8px, 10px, 0) scale(0.97); }
+  to   { transform: translate3d(14px, -10px, 0) scale(1.05); }
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 900px) {
+  .cta-wrap {
+    width: 100%;
+    min-height: 260px;
+  }
+
+  .cta-stage {
+    min-height: 260px;
+  }
+
+  .cta-card {
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    padding: 20px 18px 14px;
+  }
+
+  .status-pill,
+  .subscribe-button {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .supporting-text {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow,
+  .icon-badge::after {
+    animation: none !important;
+  }
+
+  .cta-card {
+    transition: none;
+  }
+
+  .cta-card.active .progress-fill {
+    transition: none;
+    width: 100%;
+  }
+}
